@@ -61,4 +61,3 @@ int f_tam(Fila *f){
 void free_f(Fila *f){
     //não faz nada já que a fila é alocada estaticamente
 }
-
