@@ -3,18 +3,18 @@
 
 #include "main.h"
 
-typedef struct Nodo {
+typedef struct FNodo{
     Download info;
-    struct Nodo *prox;
-} Nodo;
+    struct FNodo *prox;
+} FNodo;
 
 typedef struct {
-    Nodo *ini;
-    Nodo *fim;
+    FNodo *ini;
+    FNodo *fim;
     int tam;
 } Fila;
 
-//funções da fila dinâmica
+//funÃ§Ãµes da fila dinÃ¢mica
 void cria_fila(Fila *f);
 int f_vazia(Fila *f);
 int f_cheia(Fila *f);
