@@ -32,17 +32,16 @@ int push_f(Fila *f, Download item){
     if (f_cheia(f)){
         return 0;
     }
-    Nodo *novo = (Nodo *)malloc(sizeof(Nodo));
+    FNodo *novo = (FNodo *)malloc(sizeof(FNodo));
     if(novo == NULL)
         return 0;
     novo->info = item;
     novo->prox = NULL;
-    if (f_vazia(f)){ //se a fila estiver vazia
+
+    if (f_vazia(f)) //se a fila estiver vazia
         f->ini = novo;
-    }
-    else (f_vazia(f)){ //se a fila não estiver vazia
+    else(f_vazia(f)); //se a fila não estiver vazia
         f->fim->prox = novo;
-    }
 
     f->fim = novo; //o novo nodo é o fim agora
     f->tam++;
@@ -54,7 +53,7 @@ int pop_f(Fila *f, Download *item){
     if (f_vazia(f)){
         return 0;
     }
-    Nodo *aux = f->ini; //salva o nodo a ser removido
+    FNodo *aux = f->ini; //salva o nodo a ser removido
     *item = aux->info; //salva os dados do nodo
     f->ini = aux->prox; //avança o ponteiro pro próximo nodo
     if (f->ini == NULL){
@@ -76,4 +75,3 @@ void free_f(Fila *f){
     while (!f_vazia(f))
         pop_f(f, &temp); //libera cada nodo individualmente
 }
-
