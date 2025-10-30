@@ -2,10 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "PE.h" //pilha est·tica
-//#include "PD.h" //pilha din‚mica
-#include "FE.h" //fila est·tica
-//#include "FD.h" //fila din‚mica
+#include "PE.h" //pilha est√°tica
+//#include "PD.h" //pilha din√¢mica
+#include "FE.h" //fila est√°tica
+//#include "FD.h" //fila din√¢mica
 
 #include "main.h"
 
@@ -13,11 +13,11 @@ URL url_atual;
 
 /////////////////////////////////// DOWNLOAD ////////////////////////////////////////////////////
 
-// Processa o download que est· ativo e inicia um novo se a fila n„o estiver vazia
+// Processa o download que est√° ativo e inicia um novo se a fila n√£o estiver vazia
 void processar_downloads(Fila *fila_downloads, DownloadON *download_on) {
     Download temp;
 
-    //se tem algum download ativo, vÍ quando tempo falta (Tfalta)
+    //se tem algum download ativo, v√™ quando tempo falta (Tfalta)
     if (download_on->on) {
         download_on->Tfalta--;
 
@@ -28,7 +28,7 @@ void processar_downloads(Fila *fila_downloads, DownloadON *download_on) {
         }
     }
 
-    //se n„o tem nenhum download acontecendo mas tem itens na fila
+    //se n√£o tem nenhum download acontecendo mas tem itens na fila
     if (!download_on->on && !f_vazia(fila_downloads)) {
         if (pop_f(fila_downloads, &temp)) {
             download_on->on = 1;
@@ -39,28 +39,28 @@ void processar_downloads(Fila *fila_downloads, DownloadON *download_on) {
     }
 }
 
-///////////////////////////////////////// HIST”RICO ///////////////////////////////////////////
+///////////////////////////////////////// HIST√ìRICO ///////////////////////////////////////////
 
-void remove_historico(Pilha *historico) {
+void remove_historico(Pilha *historico, URL nova_url) {
     if (p_cheia(historico)) {
-        // remove o elemento da base e move todos os outros elementos uma posiÁ„o para baixo.
+        // remove o elemento da base e move todos os outros elementos uma posi√ß√£o para baixo.
         for (int i = 0; i < historico->topo; i++) {
             strcpy(historico->info[i], historico->info[i + 1]);
         }
-        historico->topo--; // Reduz o topo
+        historico->topo--; // reduz o topo
     }
 }
 
 ////////////////////////////////////// URL /////////////////////////////////////////////////
 
-// Adiciona uma URL ao histÛrico levando em consideraÁ„o a capacidade
+// Adiciona uma URL ao hist√≥rico levando em considera√ß√£o a capacidade
 void visita_pagina(Pilha *historico, URL nova_url) {
-    // se histÛrico estiver cheio remove o primeiro a entrar
+    // Se o historico estiver cheio (com 10 URLs), remova do historico a pagina visitada por primeiro;
     if (p_cheia(historico))
         remove_historico(historico);
 
-    push_p(historico, nova_url);
-    strcpy(url_atual, nova_url);
+    push_p(historico, nova_url); //adiciona o novo url
+    strcpy(url_atual, nova_url); //copia o url para colocar na mensagem de visualiza√ß√£o
 
     printf("visualizando %s\n", url_atual);
 }
@@ -69,18 +69,22 @@ void visita_pagina(Pilha *historico, URL nova_url) {
 
 void voltar(Pilha *historico){
     URL url_temp;
+    //vai tentar removar a p√°gina atual
+    if(pop_p(historico, url_temp))){
+        if(p_tam(historico) > 0){ //se ainda tem coisa na pilha depois do pop
+            URL ant; //armazena a p√°gina anterior
+            pop_p(historico, ant); //tira o topo para consultar
+            push_p(historico, ant); //coloca de volta depois de ver
 
-    if(p_tam(historico) > 0 && pop_p(historico, url_temp)){
-        URL ant;
+            strcpy(url_atual, ant);
+            printf("visualizando %s\n", url_atual);
+        }
+        else{ //se a pilha ficou vazia
+            strcpy(url_atual, "pagina em branco"); //atribui a mensagem
+            printf("visualizando %s\n", url_atual;)
+        }
     }
-
-    if(p_tam(historico) > 0 && pop_p(historico, ant)){
-        push_p(historico, ant); //coloca de volta no topo
-        strcpy(url_atual, ant);
-        printf("visualizando %s\n", url_atual);
-    }
-    else{
-            strcpy(url_atual, "pagina em branco");
+    else{ //a pilha j√° estava vazia no come√ßo
         printf("visualizando pagina em branco \n");
     }
 
@@ -89,30 +93,31 @@ void voltar(Pilha *historico){
 ////////////////////////////////////////////// MAIN //////////////////////////////////////////////////
 
 int main() {
-    Pilha historico; //pilha de p·ginas visitadas
+    Pilha historico; //pilha de p√°ginas visitadas
     Fila fila_downloads; //fila dos downloads pendentes
     DownloadON download_on = {"", 0, 0}; //inicializando tudo em nulo ou em zero
 
     cria_fila(&fila_downloads);
     cria_pilha(&historico);
-    strcpy(url_atual, "pagina em branco"); //a p·gina inicial È definida em branco, j· que nenhuma foi acessada ainda
+    strcpy(url_atual, "pagina em branco"); //a p√°gina inicial √© definida em branco, j√° que nenhuma foi acessada ainda
 
     char linha_comando[500]; //salva a linha inteira que foi inserida
-    char comando[100]; //salva sÛ o comando
+    char comando[100]; //salva s√≥ o comando
     char Durl[MAX_URL]; //salva o url inserido, ou o segundo comando
-    int tempo; //salva o n˙mero que È o tempo de download
+    int tempo; //salva o n√∫mero que √© o tempo de download
 
-    //stdin È para ler os dados
-    //fgets serve pra ler tudo atÈ o \n
+    //stdin √© para ler os dados
+    //fgets serve pra ler tudo at√© o \n
     while (fgets(linha_comando, sizeof(linha_comando), stdin) != NULL) {
-        // Remove o '\n' final
-        //strcspn serve pra delimitar a frase atÈ o \n
+        // remove o '\n' final
+        //strcspn serve pra delimitar a frase at√© o \n
         linha_comando[strcspn(linha_comando, "\n")] = 0;
 
-        // Limpa vari·veis antes de usar pra n„o ter bug com o que tinha nelas antes
+        // Limpa vari√°veis antes de usar pra n√£o ter bug com o que tinha nelas antes
         comando[0] = Durl[0] = '\0';
         tempo = 0;
 
+        //sscanf √© para ler v√°rias vari√°veis de uma vez
         int args = sscanf(linha_comando, "%s %s %d", comando, Durl, &tempo);
         //comando, url e tempo
 
@@ -131,21 +136,23 @@ int main() {
             case 'd': //DOWNLOAD
                 if (strcmp(comando, "download") == 0 && args == 3) {
                     Download novo;
-                    strcpy(novo.url, Durl);
+                    strcpy(novo.url, Durl); //copia o url digitado (Durl)
                     novo.Tfalta = tempo;
 
-                    if (f_cheia(&fila_downloads)) {
+                    if (f_cheia(&fila_downloads)) { //se a fila de downloads estiver cheia
                         printf("fila cheia; arquivo nao inserido na fila\n");
                     } else {
-                        push_f(&fila_downloads, novo);
-                        printf("inserido %s na fila\n", novo.url);
+                        if(push_f(&fila_downloads, novo))
+                            printf("inserido %s na fila\n", novo.url);
                     }
                 }
                 break;
 
             case 'F':
-                printf("arquivos na fila de download: %d\n",
-                       f_tam(&fila_downloads) + (download_on.on ? 1 : 0));
+                int total_downloads = f_tam(&fila_downloads);
+                if(download_on.on)
+                    total_downloads++;
+                printf("arquivos na fila de download: %d\n", total_downloads);
                 printf("paginas no historico: %d\n", p_tam(&historico));
                 free_p(&historico);
                 free_f(&fila_downloads);
@@ -155,7 +162,7 @@ int main() {
                 break;
         }
 
-        processar_downloads(&fila_downloads, &download_on); //processar downloads apÛs cada comando executado
+        processar_downloads(&fila_downloads, &download_on); //processar downloads ap√≥s cada comando executado
     }
 
     free_p(&historico);
