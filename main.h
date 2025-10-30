@@ -23,4 +23,3 @@ typedef struct { //download em andamento
 } DownloadON;
 
 #endif
-
