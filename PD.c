@@ -32,7 +32,7 @@ int push_p(Pilha *p, URL url){
     if (p_cheia(p)){
         return 0; //Pilha cheia
     }
-    Nodo *novo = (Nodo *)malloc(sizeof(Nodo));
+    PNodo *novo = (PNodo *)malloc(sizeof(PNodo));
     if (novo == NULL) {
         return 0; //Erro de alocação
     }
@@ -50,7 +50,7 @@ int pop_p(Pilha *p, URL url){
     if (p_vazia(p)) {
         return 0; //Pilha vazia
     }
-    Nodo *aux = p->topo;
+    PNodo *aux = p->topo;
     strcpy(url, aux->url);
 
     p->topo = aux->prox;
@@ -71,7 +71,7 @@ int remove_base(Pilha *p) {
         p->tam = 0;
         return 1;
     }
-    Nodo *atual = p->topo;
+    PNodo *atual = p->topo;
     while (atual->prox->prox != NULL) { //percorre até o nodo que aponta para a base
         atual = atual->prox;
     }
