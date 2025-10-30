@@ -5,10 +5,10 @@
 
 typedef struct {
     URL info[MAX_HISTORICO];
-    int topo; //posição do topo da pilha, inicialmente -1
+    int topo; //posiÃ§Ã£o do topo da pilha, inicialmente -1
 } Pilha;
 
-//funções da pilha dinâmica
+//funÃ§Ãµes da pilha dinÃ¢mica
 void cria_pilha(Pilha *p);
 int p_vazia(Pilha *p);
 int p_cheia(Pilha *p);
@@ -18,3 +18,4 @@ int p_tam(Pilha *p);
 void free_p(Pilha *p);
 
 #endif;
+
