@@ -2,16 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//Funções Fila Dinâmica
+//FunÃ§Ãµes Fila DinÃ¢mica
 
-//função que cria a fila
+//funÃ§Ã£o que cria a fila
 void cria_fila(Fila *f){
-    f->ini = f->fim;
+    f->ini = NULL;
     f->fim = NULL;
     f->tam = 0;
 }
 
-//função que verifica se a fila está vazia
+//funÃ§Ã£o que verifica se a fila estÃ¡ vazia
 int f_vazia(Fila *f){
     if(f->ini == NULL)
         return 1;
@@ -19,60 +19,61 @@ int f_vazia(Fila *f){
         return 0;
 }
 
-//função que verifica se a fila está cheia
+//funÃ§Ã£o que verifica se a fila estÃ¡ cheia
 int f_cheia(Fila *f){
-    return (f->tam >= MAX_FILA);
+    if(f->tam >= MAX_FILA)
+        return 1;
+    else
+        return 0;
 }
 
-//função que adiciona na fila
+//funÃ§Ã£o que adiciona na fila
 int push_f(Fila *f, Download item){
     if (f_cheia(f)){
-        return;
+        return 0;
     }
     Nodo *novo = (Nodo *)malloc(sizeof(Nodo));
+    if(novo == NULL)
+        return 0;
     novo->info = item;
     novo->prox = NULL;
-    if (f->fim != NULL){
-        f->fim->prox = novo;
-        f->fim = novo;
-    }
-    if (f_vazia(f)){
+    if (f_vazia(f)){ //se a fila estiver vazia
         f->ini = novo;
     }
-    else{
+    else (f_vazia(f)){ //se a fila nÃ£o estiver vazia
         f->fim->prox = novo;
     }
-    f->fim = novo;
+
+    f->fim = novo; //o novo nodo Ã© o fim agora
     f->tam++;
     return 1;
 }
 
-//função que retira da fila
+//funÃ§Ã£o que retira da fila
 int pop_f(Fila *f, Download *item){
     if (f_vazia(f)){
         return 0;
     }
-    Nodo *aux = f->ini;
-    *item = aux->info;
+    Nodo *aux = f->ini; //salva o nodo a ser removido
+    *item = aux->info; //salva os dados do nodo
+    f->ini = aux->prox; //avanÃ§a o ponteiro pro prÃ³ximo nodo
     if (f->ini == NULL){
-        f->fim = aux->prox;
         f->fim = NULL;
     }
-    else
-        free(f->ini);
     f->tam--;
     free(aux);
     return 1;
 }
 
-//função que retorna o tamanho atual da fila
+//funÃ§Ã£o que retorna o tamanho atual da fila
 int f_tam(Fila *f){
     return f->tam;
 }
 
-//função que libera a fila
+//funÃ§Ã£o que libera a fila
 void free_f(Fila *f){
     Download temp;
     while (!f_vazia(f))
-        pop_f(f, &temp);
+        pop_f(f, &temp); //libera cada nodo individualmente
 }
+
