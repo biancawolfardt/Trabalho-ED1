@@ -1,15 +1,15 @@
-#ifndef PD_H
+#ifndef PD_H#ifndef PD_H
 #define PD_H
 
 #include "main.h"
 
-typedef struct Nodo {
+typedef struct PNodo {
     URL url;
-    struct Nodo *prox;
-} Nodo;
+    struct PNodo *prox;
+} PNodo;
 
 typedef struct {
-    Nodo *topo;
+    PNodo *topo;
     int tam;
 } Pilha;
 
@@ -23,3 +23,5 @@ int p_tam(Pilha *p);
 void free_p(Pilha *p);
 
 #endif
+
+
