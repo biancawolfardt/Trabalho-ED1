@@ -1,4 +1,4 @@
-#ifndef PD_H#ifndef PD_H
+#ifndef PD_H
 #define PD_H
 
 #include "main.h"
@@ -23,5 +23,4 @@ int p_tam(Pilha *p);
 void free_p(Pilha *p);
 
 #endif
-
 
