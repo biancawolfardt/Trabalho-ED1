@@ -41,7 +41,6 @@ int push_f(Fila *f, Download item){
 //função que remove da fila
 int pop_f(Fila *f, Download *item){
     if (f_vazia(f)){
-        printf("Fila Vazia. \n");
         return 0; //fila vazia
     }
     else{
@@ -61,3 +60,4 @@ int f_tam(Fila *f){
 void free_f(Fila *f){
     //não faz nada já que a fila é alocada estaticamente
 }
+
