@@ -2,10 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "PE.h" //pilha estática
-//#include "PD.h" //pilha dinâmica
-#include "FE.h" //fila estática
-//#include "FD.h" //fila dinâmica
+//#include "PE.h" //pilha estática
+#include "PD.h" //pilha dinâmica
+//#include "FE.h" //fila estática
+#include "FD.h" //fila dinâmica
 
 #include "main.h"
 
@@ -39,29 +39,15 @@ void processar_downloads(Fila *fila_downloads, DownloadON *download_on) {
     }
 }
 
-///////////////////////////////////////// HISTÓRICO ///////////////////////////////////////////
-
-void remove_historico(Pilha *historico, URL nova_url) {
-    if (p_cheia(historico)) {
-        // remove o elemento da base e move todos os outros elementos uma posição para baixo.
-        for (int i = 0; i < historico->topo; i++) {
-            strcpy(historico->info[i], historico->info[i + 1]);
-        }
-        historico->topo--; // reduz o topo
-    }
-}
-
 ////////////////////////////////////// URL /////////////////////////////////////////////////
 
 // Adiciona uma URL ao histórico levando em consideração a capacidade
 void visita_pagina(Pilha *historico, URL nova_url) {
     // Se o historico estiver cheio (com 10 URLs), remova do historico a pagina visitada por primeiro;
     if (p_cheia(historico))
-        remove_historico(historico);
-
+        remove_base(historico);
     push_p(historico, nova_url); //adiciona o novo url
     strcpy(url_atual, nova_url); //copia o url para colocar na mensagem de visualização
-
     printf("visualizando %s\n", url_atual);
 }
 
@@ -70,7 +56,7 @@ void visita_pagina(Pilha *historico, URL nova_url) {
 void voltar(Pilha *historico){
     URL url_temp;
     //vai tentar removar a página atual
-    if(pop_p(historico, url_temp))){
+    if(pop_p(historico, url_temp)){
         if(p_tam(historico) > 0){ //se ainda tem coisa na pilha depois do pop
             URL ant; //armazena a página anterior
             pop_p(historico, ant); //tira o topo para consultar
@@ -81,7 +67,7 @@ void voltar(Pilha *historico){
         }
         else{ //se a pilha ficou vazia
             strcpy(url_atual, "pagina em branco"); //atribui a mensagem
-            printf("visualizando %s\n", url_atual;)
+            printf("visualizando %s\n", url_atual);
         }
     }
     else{ //a pilha já estava vazia no começo
@@ -149,10 +135,7 @@ int main() {
                 break;
 
             case 'F':
-                int total_downloads = f_tam(&fila_downloads);
-                if(download_on.on)
-                    total_downloads++;
-                printf("arquivos na fila de download: %d\n", total_downloads);
+                printf("arquivos na fila de download: %d\n", f_tam(&fila_downloads) + (download_on.on ? 1 : 0));
                 printf("paginas no historico: %d\n", p_tam(&historico));
                 free_p(&historico);
                 free_f(&fila_downloads);
