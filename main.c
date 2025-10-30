@@ -2,10 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-//#include "PE.h" //pilha estática
-#include "PD.h" //pilha dinâmica
-//#include "FE.h" //fila estática
-#include "FD.h" //fila dinâmica
+#include "PE.h" //pilha estática
+//#include "PD.h" //pilha dinâmica
+#include "FE.h" //fila estática
+//#include "FD.h" //fila dinâmica
 
 #include "main.h"
 
@@ -71,7 +71,7 @@ void voltar(Pilha *historico){
         }
     }
     else{ //a pilha já estava vazia no começo
-        printf("visualizando pagina em branco \n");
+        printf("visualizando pagina em branco\n");
     }
 
 }
