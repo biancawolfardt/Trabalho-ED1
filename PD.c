@@ -60,6 +60,27 @@ int pop_p(Pilha *p, URL url){
     return 1;
 }
 
+//função que remove o primeiro elemento da pilha
+int remove_base(Pilha *p) {
+    if (p_vazia(p)) {
+        return 0;
+    }
+    if (p->tam == 1) {  //se só tem um elemento na pilha
+        free(p->topo);
+        p->topo = NULL;
+        p->tam = 0;
+        return 1;
+    }
+    Nodo *atual = p->topo;
+    while (atual->prox->prox != NULL) { //percorre até o nodo que aponta para a base
+        atual = atual->prox;
+    }
+    free(atual->prox); //libera o último nodo
+    atual->prox = NULL; //o penúltimo se torna o último
+    p->tam--;
+    return 1;
+}
+
 //função que retorna o tamanho da pilha
 int p_tam(Pilha *p){
     return p->tam;
@@ -74,4 +95,3 @@ void free_p(Pilha *p){
         }
     }
 }
-
