@@ -16,9 +16,10 @@ typedef struct {
 void cria_pilha(Pilha *p);
 int p_vazia(Pilha *p);
 int p_cheia(Pilha *p);
-void push_p(Pilha *p, URL url);
+int push_p(Pilha *p, URL url);
 int pop_p(Pilha *p, URL url);
 int p_tam(Pilha *p);
 void free_p(Pilha *p);
 
 #endif
+
