@@ -9,7 +9,7 @@
 #define MAX_HISTORICO 10
 #define MAX_FILA 10
 
-typedef char URL[MAX_URL]; //url de navegação
+typedef char URL[MAX_URL]; //url de navegaÃ§Ã£o
 
 typedef struct{ //fila de downloads
     URL url;
@@ -23,3 +23,4 @@ typedef struct { //download em andamento
 } DownloadON;
 
 #endif
+
