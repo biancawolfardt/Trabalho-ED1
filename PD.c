@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//FunÁıes Pilha Din‚mica
+//Fun√ß√µes Pilha Din√¢mica
 
-//funÁ„o para criar uma pilha
+//fun√ß√£o para criar uma pilha
 void cria_pilha(Pilha *p){
     p->topo = NULL;
     p->tam = 0;
 }
 
-//funÁ„o que verifica se a pilha est· vazia
+//fun√ß√£o que verifica se a pilha est√° vazia
 int p_vazia(Pilha *p){
     if(p->topo == NULL)
         return 1;
@@ -18,22 +18,23 @@ int p_vazia(Pilha *p){
         return 0;
 }
 
-//funÁ„o que verifica se a pilha est· cheia
+//fun√ß√£o que verifica se a pilha est√° cheia
 int p_cheia(Pilha *p){
-    //o limite È dado pelo tamanho
-    return p->tam == MAX_HISTORICO;
+    //o limite √© dado pelo tamanho
+    if(p->tam == MAX_HISTORICO)
+        return 1;
+    else
+        return 0;
 }
 
-//funÁ„o para adicionar na pilha
+//fun√ß√£o para adicionar na pilha
 int push_p(Pilha *p, URL url){
     if (p_cheia(p)){
-        printf("Pilha Cheia. \n");
         return 0; //Pilha cheia
     }
     Nodo *novo = (Nodo *)malloc(sizeof(Nodo));
     if (novo == NULL) {
-        printf("Erro de AlocaÁ„o. \n");
-        return 0; //Erro de alocaÁ„o
+        return 0; //Erro de aloca√ß√£o
     }
     else{
         strcpy(novo->url, url);
@@ -44,13 +45,11 @@ int push_p(Pilha *p, URL url){
     }
 }
 
-//funÁ„o que retira um elemento da pilha
+//fun√ß√£o que retira um elemento da pilha
 int pop_p(Pilha *p, URL url){
     if (p_vazia(p)) {
-        printf("Pilha Vazia. \n");
         return 0; //Pilha vazia
     }
-
     Nodo *aux = p->topo;
     strcpy(url, aux->url);
 
@@ -61,17 +60,18 @@ int pop_p(Pilha *p, URL url){
     return 1;
 }
 
-//funÁ„o que retorna o tamanho da pilha
+//fun√ß√£o que retorna o tamanho da pilha
 int p_tam(Pilha *p){
     return p->tam;
 }
 
-//funÁ„o para liberar a pilha
+//fun√ß√£o para liberar a pilha
 void free_p(Pilha *p){
     if(p != NULL){
-        URL temp_url;
+        URL temp_url; //vari√°vel tempor√°ria para receber o valor
         while (!p_vazia(p)) {
-            pop_p(p);
+            pop_p(p, temp_url);
         }
     }
 }
+
