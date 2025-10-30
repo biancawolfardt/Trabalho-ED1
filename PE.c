@@ -44,6 +44,21 @@ int pop_p(Pilha *p, URL url){
     }
 }
 
+//função que remove a base elemento da pilha
+int remove_base(Pilha *p) {
+    if (p_vazia(p)) {
+        return 0; // Pilha vazia
+    }
+    if (p->topo + 1 < MAX_HISTORICO) {
+        return 0;
+    }
+    for (int i = 0; i < p->topo; i++) {//desloca todos os elementos do índice 1 para cima
+        strcpy(p->info[i], p->info[i + 1]); //copia o elemento i+1 para a posição i
+    }
+    p->topo--;//O topo diminui
+    return 1;
+}
+
 //função que retorna o tamanho da pilha
 int p_tam(Pilha *p){
     return p-> topo + 1;
@@ -53,4 +68,3 @@ int p_tam(Pilha *p){
 void free_p(Pilha *p){
     //não faz nada já que a pilha é estática
 }
-
